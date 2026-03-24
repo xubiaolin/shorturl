@@ -244,6 +244,29 @@ chmod +x test_api_simple.sh
 - `expires_at`: 过期时间（可选）
 - `created_at`, `updated_at`, `deleted_at`: 时间戳
 
+## 版本发布
+
+本项目遵循语义化版本规范（SemVer），详见 [RELEASE.md](RELEASE.md)。
+
+### 发布新版本
+
+```bash
+# 创建并推送 tag
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+```
+
+推送后会自动：
+- 构建多平台 Docker 镜像
+- 创建 GitHub Release
+- 推送镜像到 Docker Hub
+
+### Docker 镜像标签
+
+- `latest` - 最新版
+- `v1.0.0` - 特定版本
+- `<git-sha>` - Git commit 哈希
+
 ## 数据持久化
 
 使用 Docker 部署时，数据会自动挂载到 `./data` 目录：

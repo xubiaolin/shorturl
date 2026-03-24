@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
     paths-ignore:
       - '**.md'
       - 'LICENSE'
@@ -43,9 +45,12 @@ jobs:
         with:
           images: ${{ env.DOCKER_IMAGE }}
           tags: |
+            # master 分支构建 latest 标签
             type=raw,value=latest,enable={{is_default_branch}}
+            # Git commit SHA
             type=sha,prefix=,format=short
-            type=raw,value={{date 'YYYYMMDD'}},enable=true
+            # Git tag 版本（如 v1.0.0）
+            type=ref,event=tag
 
       - name: Build and push
         uses: docker/build-push-action@v5
