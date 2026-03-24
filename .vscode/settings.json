@@ -1,0 +1,17 @@
+{
+  "go.goroot": "/home/xubiaolin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.linux-amd64",
+  "go.toolsManagement.autoUpdate": true,
+  "go.useLanguageServer": true,
+  "gopls": {
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true,
+    "ui.diagnostic.analyses": {
+      "unusedparams": true,
+      "shadow": true,
+      "nilness": true,
+      "unusedwrite": true,
+      "useany": true
+    },
+    "ui.diagnostic.staticcheck": true
+  }
+}
