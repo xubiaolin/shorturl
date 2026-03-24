@@ -26,6 +26,9 @@
 shorturl/
 ├── main.go                 # 应用入口和路由配置
 ├── go.mod                  # Go 模块依赖
+├── Dockerfile              # Docker 镜像构建文件
+├── docker-compose.yml      # Docker Compose 配置文件
+├── .dockerignore           # Docker 构建忽略文件
 ├── handlers/               # HTTP 请求处理器
 │   ├── auth.go            # 认证相关处理
 │   ├── auth_handler.go    # 认证处理器
@@ -51,18 +54,57 @@ shorturl/
 
 ## 快速开始
 
-### 环境要求
+### 方式一：Docker 部署（推荐）
+
+#### 环境要求
+
+- Docker 20.10+
+- Docker Compose 2.0+
+
+#### 使用 Docker Compose 启动
+
+```bash
+# 构建并启动服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+
+# 停止服务
+docker-compose down
+```
+
+服务启动后，数据将自动挂载在当前目录的 `./data` 文件夹中。
+
+#### 使用 Docker 命令启动
+
+```bash
+# 构建镜像
+docker build -t shorturl:latest .
+
+# 启动容器
+docker run -d \
+  --name shorturl-service \
+  -p 8080:8080 \
+  -v $(pwd)/data:/app/data \
+  -e GIN_MODE=release \
+  shorturl:latest
+```
+
+### 方式二：本地运行
+
+#### 环境要求
 
 - Go 1.25.0 或更高版本
 - SQLite3
 
-### 安装依赖
+#### 安装依赖
 
 ```bash
 go mod download
 ```
 
-### 启动服务
+#### 启动服务
 
 ```bash
 go run main.go
@@ -201,6 +243,13 @@ chmod +x test_api_simple.sh
 - `is_active`: 是否激活
 - `expires_at`: 过期时间（可选）
 - `created_at`, `updated_at`, `deleted_at`: 时间戳
+
+## 数据持久化
+
+使用 Docker 部署时，数据会自动挂载到 `./data` 目录：
+
+- **数据库文件**: `./data/shorturl.db`
+- **数据备份**: 只需备份 `data` 目录即可
 
 ## 安全特性
 

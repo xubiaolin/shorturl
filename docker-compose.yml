@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  shorturl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shorturl-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # 挂载数据目录到当前目录的 data 文件夹
+      - ./data:/app/data
+      # 可选：挂载配置文件（如果有）
+      # - ./config:/app/config
+    environment:
+      - TZ=Asia/Shanghai
+      - DATABASE_PATH=/app/data/shorturl.db
+      - GIN_MODE=release
+    networks:
+      - shorturl-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  shorturl-network:
+    driver: bridge
